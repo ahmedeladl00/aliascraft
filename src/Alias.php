@@ -203,4 +203,25 @@ class Alias
         };
     }
 
+    /**
+     * Generate a markdown documentation string for all registered aliases.
+     *
+     * @return string
+     */
+    public static function generateDocumentation(): string
+    {
+        $md = "# Alias Documentation\n\n";
+        foreach (self::$aliases as $name => $data) {
+            $md .= "## `{$name}`\n\n";
+            if ($data['group']) {
+                $md .= "**Group:** " . $data['group'] . "\n\n";
+            }
+            if (isset($data['args']) && is_array($data['args'])) {
+                $md .= "**Expected Arguments:** " . implode(', ', (array) $data['args']) . "\n\n";
+            }
+            $md .= "\n";
+        }
+        return $md;
+    }
+
 }
