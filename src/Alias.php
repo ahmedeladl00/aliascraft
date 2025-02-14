@@ -64,7 +64,7 @@ class Alias
         self::executePreHooks($name, $args);
 
         // Validate arguments if a signature is provided.
-        if (! empty($alias['args'])) {
+        if (isset($alias['args']) && is_array($alias['args'])) {
             $expected = count($alias['args']);
             if (count($args) < $expected) {
                 throw new \InvalidArgumentException("Alias '{$name}' expects at least {$expected} arguments.");
@@ -183,6 +183,24 @@ class Alias
                 self::register($name, $aliasConfig['action'], $aliasConfig['options'] ?? []);
             }
         }
+    }
+
+    /**
+     * Create a chained alias callable from multiple alias names.
+     * When executed, it runs each alias in order.
+     *
+     * @param string ...$names
+     * @return callable
+     */
+    public static function chain(string ...$names): callable
+    {
+        return function (...$args) use ($names) {
+            $result = null;
+            foreach ($names as $aliasName) {
+                $result = self::run($aliasName, ...$args);
+            }
+            return $result;
+        };
     }
 
 }
