@@ -65,7 +65,7 @@ class Alias
 
         // Validate arguments if a signature is provided.
         if (isset($alias['args']) && is_array($alias['args'])) {
-            $expected = count($alias['args']);
+            $expected = count((array) $alias['args']);
             if (count($args) < $expected) {
                 throw new \InvalidArgumentException("Alias '{$name}' expects at least {$expected} arguments.");
             }
