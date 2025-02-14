@@ -124,4 +124,37 @@ class Alias
         }
     }
 
+    /**
+     * Get aliases filtered by group.
+     *
+     * @param string $group
+     * @return array
+     */
+    public static function getAliasesByGroup(string $group): array
+    {
+        $result = [];
+        foreach (self::$aliases as $name => $data) {
+            if (isset($data['group']) && $data['group'] === $group) {
+                $result[$name] = $data;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Change the group of an alias.
+     *
+     * @param string $name
+     * @param string $group
+     * @throws \Exception if alias is not defined.
+     */
+    public static function changeGroup(string $name, string $group): void
+    {
+        if (! isset(self::$aliases[$name])) {
+            throw new \Exception("Alias '{$name}' not defined.");
+        }
+
+        self::$aliases[$name]['group'] = $group;
+    }
+
 }
