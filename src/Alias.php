@@ -157,4 +157,32 @@ class Alias
         self::$aliases[$name]['group'] = $group;
     }
 
+    /**
+     * Load alias definitions from a config file.
+     *
+     * The file should return an array where each key is an alias name,
+     * and the value is an array with keys:
+     *   - action: callable
+     *   - options: optional array (group, args, etc.)
+     *
+     * @param string $filepath
+     * @throws \Exception
+     */
+    public static function loadFromConfigFile(string $filepath): void
+    {
+        if (! file_exists($filepath)) {
+            throw new \Exception("Configuration file not found: {$filepath}");
+        }
+        $config = include $filepath;
+        if (! is_array($config)) {
+            throw new \Exception("Configuration file must return an array.");
+        }
+
+        foreach ($config as $name => $aliasConfig) {
+            if (isset($aliasConfig['action']) && is_callable($aliasConfig['action'])) {
+                self::register($name, $aliasConfig['action'], $aliasConfig['options'] ?? []);
+            }
+        }
+    }
+
 }
