@@ -13,6 +13,18 @@ class Alias
     protected static $aliases = [];
 
     /**
+     * Pre-execution hooks.
+     * Each hook receives: alias name and reference to the arguments array.
+     */
+    protected static $preHooks = [];
+
+    /**
+     * Post-execution hooks.
+     * Each hook receives: alias name, arguments array, and the result.
+     */
+    protected static $postHooks = [];
+
+    /**
      * Register a new alias.
      *
      * @param string   $name    The alias name.
@@ -29,12 +41,6 @@ class Alias
             'args'   => $options['args'] ?? [],
         ];
     }
-
-    /**
-     * Pre-execution hooks.
-     * Each hook receives: alias name and reference to the arguments array.
-     */
-    protected static $preHooks = [];
 
     /**
      * Execute an alias.
@@ -68,6 +74,9 @@ class Alias
         // Run the alias callable.
         $result = call_user_func_array($action, $args);
 
+        // Execute post-hooks.
+        self::executePostHooks($name, $args, $result);
+
         return $result;
     }
 
@@ -78,9 +87,21 @@ class Alias
      *
      * @param callable $hook
      */
-    public static function addPreHook(callable $hook): void
+    public static function registerPreHook(callable $hook): void
     {
         self::$preHooks[] = $hook;
+    }
+
+    /**
+     * Register a post-execution hook.
+     *
+     * The hook is a callable that receives (string $alias, array $args, $result).
+     *
+     * @param callable $hook
+     */
+    public static function registerPostHook(callable $hook): void
+    {
+        self::$postHooks[] = $hook;
     }
 
     /**
@@ -92,4 +113,15 @@ class Alias
             call_user_func($hook, $name, $args);
         }
     }
+
+    /**
+     * Execute all post-hooks.
+     */
+    protected static function executePostHooks(string $name, array $args, $result): void
+    {
+        foreach (self::$postHooks as $hook) {
+            call_user_func($hook, $name, $args, $result);
+        }
+    }
+
 }
