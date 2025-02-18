@@ -1,11 +1,16 @@
 {
     "name": "ahmedeladl00/aliascraft",
-    "description": "AliasCraft is perfect for automating common tasks, scripting deployments, and managing command pipelines with ease!",
+    "description": "A PHP library to register and execute custom command aliases with Laravel integration.",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
             "AliasCraft\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AliasCraft\\Tests\\": "tests/"
         }
     },
     "authors": [
@@ -14,7 +19,19 @@
             "email": "ahmed.eladl@rub.de"
         }
     ],
+    "require": {
+        "php": "^8.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "^12.0"
-    }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AliasCraft\\AliasCraftServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
