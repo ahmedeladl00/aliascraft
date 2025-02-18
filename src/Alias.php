@@ -110,7 +110,7 @@ class Alias
     protected static function executePreHooks(string $name, array &$args): void
     {
         foreach (self::$preHooks as $hook) {
-            call_user_func($hook, $name, $args);
+            $hook($name, $args);
         }
     }
 
@@ -120,7 +120,7 @@ class Alias
     protected static function executePostHooks(string $name, array $args, $result): void
     {
         foreach (self::$postHooks as $hook) {
-            call_user_func($hook, $name, $args, $result);
+            $hook($name, $args, $result);
         }
     }
 

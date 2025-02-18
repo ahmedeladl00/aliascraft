@@ -1,0 +1,20 @@
+{
+    "name": "ahmedeladl00/aliascraft",
+    "description": "AliasCraft is perfect for automating common tasks, scripting deployments, and managing command pipelines with ease!",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AliasCraft\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ahmed T. Eladl",
+            "email": "ahmed.eladl@rub.de"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^12.0"
+    }
+}
