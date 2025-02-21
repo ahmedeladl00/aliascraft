@@ -125,6 +125,22 @@ class Alias
     }
 
     /**
+     * List all registered aliases.
+     */
+    public static function list(): void
+    {
+        $format = "| %-30s | %-20s | %-30s |\n";
+        printf($format, 'Name', 'Group', 'Description');
+        echo str_repeat('-', 87) . "\n";
+        
+        foreach (self::$aliases as $name => $data) {
+            $group = $data['group'] ?? 'default';
+            $description = $data['description'] ?? '';
+            printf($format, $name, $group, $description);
+        }
+    }
+
+    /**
      * Get aliases filtered by group.
      *
      * @param string $group
